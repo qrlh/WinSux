@@ -1,3 +1,5 @@
+# Attention, this is a fork.
+
 # WinSux
 - Windows one click guide for power users
 
@@ -8,7 +10,7 @@
 # IWR
 - Paste this code into an elevated Administrator PowerShell/Terminal window
 ```
-iwr https://github.com/qrlh/WinSux/raw/refs/heads/main/WinSux.ps1 -useb | iex
+iwr https://github.com/qrlh/WinSux/raw/refs/heads/main/src/WinSux.ps1 -useb | iex
 ```
 
 # Graphics
