@@ -386,9 +386,9 @@ Windows Registry Editor Version 5.00
 ; disable personalized experiences
 "PersonalizationEnabled"=hex(5f5e10b):00,0d,56,a1,8a,cd,93,dc,01
 '@
-Set-Content -Path "$env:SystemRoot\Temp\windowsstore.reg" -Value $storesettings -Force
+Set-Content -Path "$env:TEMP\WinSux\windowsstore.reg" -Value $storesettings -Force
 $settingsdat = "$env:LocalAppData\Packages\Microsoft.WindowsStore_8wekyb3d8bbwe\Settings\settings.dat"
-$regfilewindowsstore = "$env:SystemRoot\Temp\windowsstore.reg"
+$regfilewindowsstore = "$env:TEMP\WinSux\windowsstore.reg"
 
 # load hive
 reg load "HKLM\Settings" $settingsdat >$null 2>&1
@@ -420,7 +420,7 @@ Run-Trusted -command $capabilityconsentstoragedb
 cmd /c "reg add `"HKLM\SYSTEM\ControlSet001\Services\CDPUserSvc`" /v `"Start`" /t REG_DWORD /d `"4`" /f >nul 2>&1"
 
 # import steptwo reg file
-Start-Process -Wait "regedit.exe" -ArgumentList "/S `"$env:SystemRoot\Temp\reg.reg`"" -WindowStyle Hidden
+Start-Process -Wait "regedit.exe" -ArgumentList "/S `"$env:TEMP\WinSux\src\reg.reg`"" -WindowStyle Hidden
 
 # disable gamebarpresencewriter.exe
 Run-Trusted -command "reg add `"HKLM\SOFTWARE\Microsoft\WindowsRuntime\ActivatableClassId\Windows.Gaming.GameBar.PresenceServer.Internal.PresenceWriter`" /v `"ActivationType`" /t REG_DWORD /d `"0`" /f"
@@ -540,7 +540,7 @@ $disableprioritynotificationsregcontent += '  00,73,00,74,00,65,00,6D,00,2E,00,4
 $disableprioritynotificationsregcontent += '  72,00,65,00,45,00,78,00,70,00,65,00,72,00,69,00,65,00,6E,00,63,00,65,00,52,\' + "`n"
 $disableprioritynotificationsregcontent += '  00,65,00,63,00,65,00,69,00,76,00,65,00,00,00,00,00'
 }
-$disableprioritynotificationsregfile = "$env:SystemRoot\Temp\disablesetprioritynotifications.reg"
+$disableprioritynotificationsregfile = "$env:TEMP\WinSux\disablesetprioritynotifications.reg"
 $disableprioritynotificationsregcontent | Out-File -FilePath $disableprioritynotificationsregfile -Encoding ASCII
 
 # import reg file
@@ -562,9 +562,9 @@ Windows Registry Editor Version 5.00
 "Microsoft.Windows.Photos_8wekyb3d8bbwe"=hex(5f5e10b):01,61,ed,11,34,f7,9f,dc,01
 "MicrosoftWindows.Client.CBS_cw5n1h2txyewy"=hex(5f5e10b):01,61,ed,11,34,f7,9f,dc,01
 '@
-Set-Content -Path "$env:SystemRoot\Temp\appactions.reg" -Value $appactions -Force
+Set-Content -Path "$env:TEMP\WinSux\appactions.reg" -Value $appactions -Force
 $settingsdat = "$env:LOCALAPPDATA\Packages\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\Settings\settings.dat"
-$regfileappactions = "$env:SystemRoot\Temp\appactions.reg"
+$regfileappactions = "$env:TEMP\WinSux\appactions.reg"
 
 # load hive
 reg load "HKLM\Settings" $settingsdat >$null 2>&1
@@ -737,9 +737,9 @@ Windows Registry Editor Version 5.00
 "GhostFile"=hex(5f5e10b):00,42,60,f1,5a,d1,84,db,01
 "RewriteEnabled"=hex(5f5e10b):00,12,4a,7f,5f,d1,84,db,01
 '@
-Set-Content -Path "$env:SystemRoot\Temp\notepadsettings.reg" -Value $NotepadSettings -Force
+Set-Content -Path "$env:TEMP\WinSux\notepadsettings.reg" -Value $NotepadSettings -Force
 $SettingsDat = "$env:LocalAppData\Packages\Microsoft.WindowsNotepad_8wekyb3d8bbwe\Settings\settings.dat"
-$RegFileNotepadSettings = "$env:SystemRoot\Temp\notepadsettings.reg"
+$RegFileNotepadSettings = "$env:TEMP\WinSux\notepadsettings.reg"
 
 # load hive
 reg load "HKLM\Settings" $SettingsDat >$null 2>&1
@@ -869,10 +869,10 @@ Remove-Item -Recurse -Force "$env:SystemDrive\Windows\StartMenuLayout.xml" -Erro
 Remove-Item -Recurse -Force "$env:USERPROFILE\AppData\Local\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState\start2.bin" -ErrorAction SilentlyContinue | Out-Null
 
 # decode start2 txt
-certutil.exe -decode "$env:SystemRoot\Temp\start2.txt" "$env:SystemRoot\Temp\start2.bin" >$null
+certutil.exe -decode "$env:TEMP\WinSux\src\start2.txt" "$env:TEMP\WinSux\bin\start2.bin" >$null
 
 # install start2 bin
-Copy-Item "$env:SystemRoot\Temp\start2.bin" -Destination "$env:USERPROFILE\AppData\Local\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState" -Force -ErrorAction SilentlyContinue | Out-Null
+Copy-Item "$env:TEMP\WinSux\bin\start2.bin" -Destination "$env:USERPROFILE\AppData\Local\Packages\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\LocalState" -Force -ErrorAction SilentlyContinue | Out-Null
 
 # set start menu apps view to list
 cmd /c "reg add `"HKCU\Software\Microsoft\Windows\CurrentVersion\Start`" /v `"AllAppsViewMode`" /t REG_DWORD /d `"2`" /f >nul 2>&1"
@@ -966,42 +966,42 @@ $InstallFile = $Dialog.FileName
         Write-Host "DEBLOATING DRIVER`n"
 
 # extract driver with 7zip
-& "$env:SystemDrive\Program Files\7-Zip\7z.exe" x "$InstallFile" -o"$env:SystemRoot\Temp\nvidiadriver" -y | Out-Null
+& "$env:SystemDrive\Program Files\7-Zip\7z.exe" x "$InstallFile" -o"$env:TEMP\WinSux\bin\nvidiadriver" -y | Out-Null
 
 # debloat nvidia driver
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\Display.Nview" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\FrameViewSDK" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\HDAudio" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\MSVCRT" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvApp.MessageBus" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvBackend" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvContainer" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvCpl" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvDLISR" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NVPCF" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvTelemetry" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvVAD" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\PhysX" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\PPC" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\ShadowPlay" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvApp\CEF" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvApp\osc" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvApp\Plugins" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvApp\UpgradeConsent" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvApp\www" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvApp\7z.dll" -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvApp\7z.exe" -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvApp\DarkModeCheck.exe" -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvApp\InstallerExtension.dll" -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvApp\NvApp.nvi" -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvApp\NvAppApi.dll" -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvApp\NvAppExt.dll" -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemRoot\Temp\nvidiadriver\NvApp\NvConfigGenerator.dll" -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\Display.Nview" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\FrameViewSDK" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\HDAudio" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\MSVCRT" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvApp.MessageBus" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvBackend" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvContainer" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvCpl" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvDLISR" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NVPCF" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvTelemetry" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvVAD" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\PhysX" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\PPC" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\ShadowPlay" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvApp\CEF" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvApp\osc" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvApp\Plugins" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvApp\UpgradeConsent" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvApp\www" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvApp\7z.dll" -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvApp\7z.exe" -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvApp\DarkModeCheck.exe" -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvApp\InstallerExtension.dll" -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvApp\NvApp.nvi" -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvApp\NvAppApi.dll" -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvApp\NvAppExt.dll" -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\nvidiadriver\NvApp\NvConfigGenerator.dll" -Force -ErrorAction SilentlyContinue | Out-Null
 
         Write-Host "INSTALLING DRIVER`n"
 
 # install nvidia driver
-Start-Process "$env:SystemRoot\Temp\nvidiadriver\setup.exe" -ArgumentList "-s -noreboot -noeula -clean" -Wait -NoNewWindow
+Start-Process "$env:TEMP\WinSux\bin\nvidiadriver\setup.exe" -ArgumentList "-s -noreboot -noeula -clean" -Wait -NoNewWindow
 
 # install nvidia control panel
 try {
@@ -1260,10 +1260,10 @@ $nipfile = @'
   </Profile>
 </ArrayOfProfile>
 '@
-Set-Content -Path "$env:SystemRoot\Temp\inspector.nip" -Value $nipfile -Force
+Set-Content -Path "$env:TEMP\WinSux\src\inspector.nip" -Value $nipfile -Force
 
 # import nip
-Start-Process -wait "$env:SystemRoot\Temp\inspector.exe" -ArgumentList "-silentImport -silent $env:SystemRoot\Temp\inspector.nip"
+Start-Process -wait "$env:TEMP\WinSux\bin\inspector.exe" -ArgumentList "-silentImport -silent $env:TEMP\WinSux\src\inspector.nip"
 
         break MainLoop
 
@@ -1295,20 +1295,20 @@ $InstallFile = $Dialog.FileName
         Write-Host "DEBLOATING DRIVER`n"
 
 # extract driver with 7zip
-& "$env:SystemDrive\Program Files\7-Zip\7z.exe" x "$InstallFile" -o"$env:SystemRoot\Temp\amddriver" -y | Out-Null
+& "$env:SystemDrive\Program Files\7-Zip\7z.exe" x "$InstallFile" -o"$env:TEMP\WinSux\bin\amddriver" -y | Out-Null
 
 # edit xml files, set enabled & hidden to false
 $xmlFiles = @(
-"$env:SystemRoot\Temp\amddriver\Config\AMDAUEPInstaller.xml"
-"$env:SystemRoot\Temp\amddriver\Config\AMDCOMPUTE.xml"
-"$env:SystemRoot\Temp\amddriver\Config\AMDLinkDriverUpdate.xml"
-"$env:SystemRoot\Temp\amddriver\Config\AMDRELAUNCHER.xml"
-"$env:SystemRoot\Temp\amddriver\Config\AMDScoSupportTypeUpdate.xml"
-"$env:SystemRoot\Temp\amddriver\Config\AMDUpdater.xml"
-"$env:SystemRoot\Temp\amddriver\Config\AMDUWPLauncher.xml"
-"$env:SystemRoot\Temp\amddriver\Config\EnableWindowsDriverSearch.xml"
-"$env:SystemRoot\Temp\amddriver\Config\InstallUEP.xml"
-"$env:SystemRoot\Temp\amddriver\Config\ModifyLinkUpdate.xml"
+"$env:TEMP\WinSux\bin\amddriver\Config\AMDAUEPInstaller.xml"
+"$env:TEMP\WinSux\bin\amddriver\Config\AMDCOMPUTE.xml"
+"$env:TEMP\WinSux\bin\amddriver\Config\AMDLinkDriverUpdate.xml"
+"$env:TEMP\WinSux\bin\amddriver\Config\AMDRELAUNCHER.xml"
+"$env:TEMP\WinSux\bin\amddriver\Config\AMDScoSupportTypeUpdate.xml"
+"$env:TEMP\WinSux\bin\amddriver\Config\AMDUpdater.xml"
+"$env:TEMP\WinSux\bin\amddriver\Config\AMDUWPLauncher.xml"
+"$env:TEMP\WinSux\bin\amddriver\Config\EnableWindowsDriverSearch.xml"
+"$env:TEMP\WinSux\bin\amddriver\Config\InstallUEP.xml"
+"$env:TEMP\WinSux\bin\amddriver\Config\ModifyLinkUpdate.xml"
 )
 foreach ($file in $xmlFiles) {
 if (Test-Path $file) {
@@ -1321,8 +1321,8 @@ Set-Content $file -Value $content -NoNewline
 
 # edit json files, set installbydefault to no
 $jsonFiles = @(
-"$env:SystemRoot\Temp\amddriver\Config\InstallManifest.json"
-"$env:SystemRoot\Temp\amddriver\Bin64\cccmanifest_64.json"
+"$env:TEMP\WinSux\bin\amddriver\Config\InstallManifest.json"
+"$env:TEMP\WinSux\bin\amddriver\Bin64\cccmanifest_64.json"
 )
 foreach ($file in $jsonFiles) {
 if (Test-Path $file) {
@@ -1335,7 +1335,7 @@ Set-Content $file -Value $content -NoNewline
         Write-Host "INSTALLING DRIVER`n"
 
 # install amd driver
-Start-Process -Wait "$env:SystemRoot\Temp\amddriver\Bin64\ATISetup.exe" -ArgumentList "-INSTALL -VIEW:2" -WindowStyle Hidden
+Start-Process -Wait "$env:TEMP\WinSux\bin\amddriver\Bin64\ATISetup.exe" -ArgumentList "-INSTALL -VIEW:2" -WindowStyle Hidden
 
 # delete amdnoisesuppression startup
 cmd /c "reg delete `"HKCU\Software\Microsoft\Windows\CurrentVersion\Run`" /v `"AMDNoiseSuppression`" /f >nul 2>&1"
@@ -1510,12 +1510,12 @@ $InstallFile = $Dialog.FileName
         Write-Host "INSTALLING DRIVER`n"
 
 # install intel driver
-Start-Process "cmd.exe" -ArgumentList "/c `"$env:SystemDrive\inteldriver\Installer.exe`" -f --noExtras --terminateProcesses -s" -WindowStyle Hidden -Wait
+Start-Process "cmd.exe" -ArgumentList "/c `"$env:TEMP\WinSux\bin\inteldriver\Installer.exe`" -f --noExtras --terminateProcesses -s" -WindowStyle Hidden -Wait
 
 # install intel control panel
-$IntelGraphicsSoftware = Get-ChildItem "$env:SystemDrive\inteldriver\Resources\Extras\IntelGraphicsSoftware_*.exe" | Select-Object -First 1 -ExpandProperty Name
+$IntelGraphicsSoftware = Get-ChildItem "$env:TEMP\WinSux\bin\inteldriver\Resources\Extras\IntelGraphicsSoftware_*.exe" | Select-Object -First 1 -ExpandProperty Name
 if ($IntelGraphicsSoftware) {
-Start-Process "$env:SystemDrive\inteldriver\Resources\Extras\$IntelGraphicsSoftware" -ArgumentList "/s" -Wait -NoNewWindow
+Start-Process "$env:TEMP\WinSux\bin\inteldriver\Resources\Extras\$IntelGraphicsSoftware" -ArgumentList "/s" -Wait -NoNewWindow
 }
 
 # delete intel® graphics software startup
@@ -1560,7 +1560,7 @@ Remove-Item "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Intel" -Recu
 
 # delete old driver files
 Remove-Item "$env:SystemDrive\Intel" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-Remove-Item "$env:SystemDrive\inteldriver" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Remove-Item "$env:TEMP\WinSux\bin\inteldriver" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
 
         Write-Host "IMPORTING SETTINGS`n"
 
@@ -1874,7 +1874,7 @@ powercfg /setdcvalueindex 99999999-9999-9999-9999-999999999999 de830923-a562-41a
         ## services.msc
 
 # compile and create service
-Start-Process -Wait "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe" -ArgumentList "-out:C:\Windows\SetTimerResolutionService.exe C:\Windows\Temp\settimerresolutionservice.cs" -WindowStyle Hidden
+Start-Process -Wait "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe" -ArgumentList "-out:C:\Windows\SetTimerResolutionService.exe $env:TEMP\WinSux\src\settimerresolutionservice.cs" -WindowStyle Hidden
 
 # remove old service if exists
 if (Get-Service -Name "Set Timer Resolution Service" -ErrorAction SilentlyContinue) {
@@ -1907,7 +1907,7 @@ Get-AppxPackage -allusers *Microsoft.OutlookForWindows* | Remove-AppxPackage -Er
 		## temp
 
 # clear %temp% folder
-Remove-Item -Path "$env:USERPROFILE\AppData\Local\Temp\*" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+Get-ChildItem -Path "$env:USERPROFILE\AppData\Local\Temp" -Exclude "WinSux" | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
 
 # clear temp folder
 Remove-Item -Path "$env:SystemDrive\Windows\Temp\*" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null

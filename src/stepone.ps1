@@ -150,4 +150,4 @@ cmd /c "bcdedit /deletevalue {current} safeboot >nul 2>&1"
         Write-Host "DDU & RESTARTING`n" -ForegroundColor Red
 
 # uninstall soundblaster realtek intel amd nvidia drivers & restart
-Start-Process "$env:SystemRoot\Temp\ddu\Display Driver Uninstaller.exe" -ArgumentList "-CleanSoundBlaster -CleanRealtek -CleanAllGpus -Restart" -Wait
+Start-Process "$env:TEMP\WinSux\bin\ddu\Display Driver Uninstaller.exe" -ArgumentList "-CleanSoundBlaster -CleanRealtek -CleanAllGpus -Restart" -Wait
